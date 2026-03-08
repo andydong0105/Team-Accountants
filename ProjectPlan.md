@@ -52,7 +52,7 @@ The two datasets can be meaningfully integrated because they share a common **te
 
 ### Dataset 1: Federal Funds Rate (FRED)
 
-The first dataset contains historical values of the **Federal Funds Effective Rate**, obtained from the [Federal Reserve Economic Data (FRED)](https://fred.stlouisfed.org/) database maintained by the Federal Reserve Bank of St. Louis. The Federal Funds Rate is the interest rate at which depository institutions lend reserve balances to other institutions overnight and is widely regarded as the central policy rate used by the Federal Reserve to influence economic activity.
+The first dataset contains historical values of the **Federal Funds Effective Rate**, obtained from the [Federal Reserve Economic Data (FRED)](https://fred.stlouisfed.org/series/DFF) database maintained by the Federal Reserve Bank of St. Louis. The Federal Funds Rate is the interest rate at which depository institutions lend reserve balances to other institutions overnight and is widely regarded as the central policy rate used by the Federal Reserve to influence economic activity.
 
 Key characteristics of this dataset include:
 
@@ -68,7 +68,7 @@ This dataset represents the **monetary policy environment** and provides a long 
 
 ### Dataset 2: S&P 500 Market Data (Yahoo Finance)
 
-The second dataset contains historical data for the **S&P 500 index**, retrieved from [Yahoo Finance](https://finance.yahoo.com/), a widely used public source for financial market data*. The S&P 500 index tracks the performance of 500 large publicly traded U.S. companies and is commonly used as a benchmark for overall stock market performance.
+The second dataset contains historical data for the **S&P 500 index**, retrieved from [Yahoo Finance](https://finance.yahoo.com/quote/%5EGSPC/), a widely used public source for financial market data*. The S&P 500 index tracks the performance of 500 large publicly traded U.S. companies and is commonly used as a benchmark for overall stock market performance.
 
 Key characteristics of this dataset include:
 
