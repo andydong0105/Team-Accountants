@@ -94,7 +94,7 @@ The two datasets are integrated using their shared **date attribute**, allowing 
 
 ---
 
-# Timeline
+## Timeline
 
 The project will be completed in several stages corresponding to the data curation workflow required for the final deliverables. Tasks are scheduled so that each stage builds on the previous one while aligning with the official course milestones.
 
@@ -112,7 +112,7 @@ The project will be completed in several stages corresponding to the data curati
 
 ---
 
-# Constraints
+## Constraints
 
 Several limitations and challenges may affect this project, particularly those related to differences in dataset structure, temporal coverage, and the nature of financial time-series data.
 
@@ -134,7 +134,7 @@ Several limitations and challenges may affect this project, particularly those r
 
 ---
 
-# Gaps
+## Gaps
 
 While the current project plan outlines the main workflow and datasets, several areas remain open for further refinement as the project progresses.
 
