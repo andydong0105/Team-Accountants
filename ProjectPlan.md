@@ -1,3 +1,7 @@
+# 💵Team Accountants Project Plan💵
+
+---
+
 ## Overview
 
 The goal of this project is to examine the relationship between U.S. monetary policy and stock market performance by integrating macroeconomic and financial market data from multiple sources. In particular, we aim to investigate how changes in the **Federal Funds Rate**, a key policy interest rate set by the Federal Reserve, relate to movements in the **S&P 500 index**, one of the most widely used indicators of U.S. equity market performance.
