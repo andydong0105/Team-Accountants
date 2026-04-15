@@ -5,8 +5,10 @@ This Interim Status Report provides an update on the current progress of our pro
 To date, we have completed the data acquisition, storage and organization, and data integration stages, and have implemented a reproducible workflow supported by scripts and structured data outputs. We have also revised the project plan to better align with course concepts and methodological expectations.
 
 This report includes a summary of revisions to the project plan, a detailed update on task progress with references to repository artifacts, a discussion of key challenges encountered, and individual contributions from each team member.
+
 ---
 ---
+
 ## 2. Revisions to the Project Plan
 
 Based on the feedback received for Milestone 2, we made several targeted revisions to our project plan to improve conceptual clarity, methodological precision, and alignment with course terminology. Overall, the revised plan shifts from a high-level outline toward a more structured and theoretically grounded design.
@@ -80,9 +82,9 @@ These changes make the timeline more transparent and better aligned with the ite
 | Data Analysis and Visualization | Perform exploratory data analysis and generate visualizations to examine relationships between variables. | Andy Dong | April 26, 2026 | Not Started |
 | Metadata and Data Documentation | Develop metadata, data dictionary, and workflow documentation to support interpretability and reuse. | Andy Dong | May 3, 2026 | Not Started |
 | Final Report | Finalize analysis, compile report, and publish reproducible project artifacts (data, scripts, documentation) via GitHub release. | Weimo Song & Andy Dong | May 3, 2026 | Not Started |
----
----
 
+---
+---
 
 ### 3.1 Completed Tasks
 
@@ -202,8 +204,10 @@ Comprehensive metadata has not yet been completed. We will develop a data dictio
 #### Final Report
 
 The final report has not yet been started. Future work will focus on integrating all components—data, analysis, and documentation—into a fully reproducible and well-structured final deliverable.
+
 ---
 ---
+
 ## 4. Challenges and How We Are Addressing Them
 
 Throughout the project, we have encountered several challenges related to data integration, data quality, and the evolving nature of the workflow. These challenges are closely tied to concepts discussed in the course, and we outline both their implications and our planned responses below.
@@ -235,8 +239,10 @@ Some stages of the project, such as advanced data cleaning, workflow automation,
 
 This creates uncertainty in how certain steps should be optimally implemented.  
 We address this by treating the project as an iterative process, refining our methods as new concepts are introduced in the course. This approach allows us to progressively improve the workflow while aligning with best practices introduced later in the semester.
+
 ---
 ---
+
 ## 5. Team Member Contribution Summaries
 
 ### Weimo Song
