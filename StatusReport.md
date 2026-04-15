@@ -86,6 +86,12 @@ These changes make the timeline more transparent and better aligned with the ite
 ---
 ---
 
+## 3. Progress Update on Project Tasks
+
+This section summarizes the current status of all tasks defined in the project plan. We distinguish between completed tasks and remaining tasks, and provide references to specific artifacts in the repository to demonstrate progress, methodological decisions, and reproducibility.
+
+---
+
 ### 3.1 Completed Tasks
 
 #### Data Collection and Acquisition
