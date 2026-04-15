@@ -46,51 +46,81 @@ These questions will be addressed by integrating interest rate data from FRED wi
 
 ## Datasets
 
-This project integrates two independent datasets that capture different aspects of the U.S. economic and financial system. One dataset represents **monetary policy conditions**, while the other represents **stock market performance**. Together, they provide complementary information that enables the analysis of relationships between interest rate policy and equity market behavior.
+This project integrates two independent datasets that capture different aspects of the U.S. economic system. From a data management perspective, these are **secondary observational datasets**, meaning we inherit the structure, schema design, and data quality decisions made by the original providers. This has implications for how the data can be interpreted, transformed, and reused. 
+The datasets represent two conceptual entities:
+- monetary policy conditions (interest rates)
+- stock market performance (equity index values)
 
-The two datasets can be meaningfully integrated because they share a common **temporal attribute (date)**, allowing them to be linked into a unified time-series dataset.
+Both datasets are structured as **time-series relations**, where each row represents an observation at a given time and each column represents an attribute. The shared temporal attribute enables them to be linked at the schema level.
 
 ### Dataset 1: Federal Funds Rate (FRED)
 
-The first dataset contains historical values of the **Federal Funds Effective Rate**, obtained from the [Federal Reserve Economic Data (FRED)](https://fred.stlouisfed.org/series/DFF) database maintained by the Federal Reserve Bank of St. Louis. The Federal Funds Rate is the interest rate at which depository institutions lend reserve balances to other institutions overnight and is widely regarded as the central policy rate used by the Federal Reserve to influence economic activity.
+The first dataset contains historical values of the Federal Funds Effective Rate from the [Federal Reserve Economic Data (FRED)](https://fred.stlouisfed.org/) database.
 
-Key characteristics of this dataset include:
+Key characteristics:
 
-* **Source:** Federal Reserve Economic Data (FRED)
-* **Series name:** Federal Funds Effective Rate (DFF)
-* **Temporal coverage:** July 1954 – present
-* **Frequency:** Daily observations
-* **Primary variables:**
-  * `date` – observation date
-  * `value` – federal funds effective rate (percentage)
+* **Source:** FRED (Federal Reserve Bank of St. Louis)  
+* **Type:** Secondary observational data (API-based acquisition)  
+* **Series:** DFF  
+* **Temporal coverage:** July 1954 – present  
+* **Frequency:** Daily (calendar-day observations)  
+* **Primary attributes:**
+  * `date` – observation date  
+  * `value` – federal funds rate  
 
-This dataset represents the **monetary policy environment** and provides a long historical record of interest rate movements. Because it is distributed through the FRED API, it can be programmatically retrieved, ensuring reproducibility and allowing the dataset to be updated automatically when new observations are released.
+From a schema perspective, this dataset follows a simple relational structure with a single primary measurement (`value`) indexed by time. The dataset reflects how monetary policy is operationalized and recorded, but also embeds assumptions about what constitutes a valid observation (e.g., one rate per day, including non-trading days).
 
 ### Dataset 2: S&P 500 Market Data (Yahoo Finance)
 
-The second dataset contains historical data for the **S&P 500 index**, retrieved from [Yahoo Finance](https://finance.yahoo.com/quote/%5EGSPC/), a widely used public source for financial market data*. The S&P 500 index tracks the performance of 500 large publicly traded U.S. companies and is commonly used as a benchmark for overall stock market performance.
+The second dataset contains historical S&P 500 index data from [Yahoo Finance](https://finance.yahoo.com/).
 
-Key characteristics of this dataset include:
+Key characteristics:
 
 * **Source:** Yahoo Finance  
+* **Type:** Secondary observational data (downloaded via API/library)  
 * **Index:** S&P 500 (^GSPC)  
 * **Temporal coverage:** December 1927 – present  
-* **Frequency:** Daily trading-day observations  
-* **Primary variables:**
-  * `Date` – trading date
-  * `Close` – closing value of the index
-  * `Open` – opening value of the index
-  * `High` – highest value reached during the trading day
-  * `Low` – lowest value reached during the trading day
-  * `Volume` – total trading volume for the day
+* **Frequency:** Daily (trading-day observations only)  
+* **Primary attributes:**
+  * `Date` – trading date  
+  * `Close`, `Open`, `High`, `Low` – price attributes  
+  * `Volume` – trading volume  
 
-For this project, we focus primarily on the **closing index value** because it reflects the final market consensus after a full trading session. Closing prices are widely used in financial analysis and economic research since they incorporate all intraday information and are the standard reference for computing daily returns and long-term market trends.
+This dataset is more complex at the schema level, containing multiple attributes describing each trading-day observation. It reflects the structure of financial market data, where observations exist only when markets are open. As a result, the notion of a “day” differs conceptually from the FRED dataset.
 
-*Compared to the Federal Funds Rate series from FRED used in HW1, which only covers data for the last 10 years due to restrictions imposed by FRED's agreement with S&P Dow Jones Indices LLC, Yahoo offers a much broader timeframe, starting from December 1927.
+For this project, we focus on the `Close` attribute, as it represents the final aggregated market value for each trading session and is commonly used as a standardized measure in financial analysis.
 
 ### Dataset Integration
 
-The two datasets are integrated using their shared **date attribute**, allowing them to be aligned as a single time-series dataset. Because the Federal Funds Rate dataset includes observations for all calendar days while the stock market dataset includes only trading days, the integration process will involve aligning dates and handling differences in temporal frequency. The resulting integrated dataset will allow us to analyze how changes in interest rates correspond to movements in stock market values over time.
+The two datasets will be integrated at the **schema level** and **record level** using the temporal attribute as the linkage key. While both datasets contain a date field, they exhibit **schema heterogeneity** and **temporal granularity mismatch**, requiring explicit alignment decisions rather than a direct join.
+
+We define the S&P 500 dataset (trading-day observations) as the **reference relation**, and perform a **left join** by mapping Federal Funds Rate observations onto trading dates. This establishes a consistent observation unit: one record per trading day.
+
+Our integration workflow follows standard data integration steps:  
+
+- **Schema matching:** align `date` (FRED) with `Date` (Yahoo) and standardize formats 
+
+- **Schema mapping:** define the integrated schema with selected attributes (`date`, `close`, `value`)  
+
+- **Transformation:** convert both datasets into a common tidy structure  
+
+- **Record-level integration:** join on date after preprocessing and cleaning :contentReference[oaicite:0]{index=0}  
+
+To address the temporal mismatch, we will apply a **rule-based data fusion strategy**:
+- For each trading day, assign the corresponding Federal Funds Rate observed on that date  
+- Non-trading-day observations (weekends/holidays) will be excluded, creating a controlled **completeness reduction**
+
+We also restrict the integrated dataset to the **overlapping temporal coverage (post-1954)** to ensure population consistency.
+
+This approach introduces trade-offs:
+
+- We lose some temporal completeness (dropped observations)
+
+- We impose a market-centric definition of time
+
+- We simplify the relationship between policy rates and market responses
+
+However, this design produces a dataset that is **fit for use** for analyzing market behavior. Additional derived attributes (e.g., daily returns, rate changes) may be constructed to support downstream analysis, though these transformations may introduce further assumptions that will be documented.
 
 ---
 
