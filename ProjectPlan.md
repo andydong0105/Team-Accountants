@@ -126,60 +126,96 @@ However, this design produces a dataset that is **fit for use** for analyzing ma
 
 ## Timeline
 
-The project will be completed in several stages corresponding to the data curation workflow required for the final deliverables. Tasks are scheduled so that each stage builds on the previous one while aligning with the official course milestones.
+The project follows a structured data curation workflow aligned with course concepts such as data acquisition, schema-level integration, data quality assessment, and reproducibility.
 
-| Task | Description | Responsible | Target Completion |
-|-----|-------------|-------------|------------------|
-| Data Collection and Acquisition | Develop scripts to programmatically retrieve the Federal Funds Rate from FRED and S&P 500 data from Yahoo Finance. Document the acquisition process and verify that the datasets can be reproducibly retrieved. | Weimo Song | March 15, 2026 |
-| Storage and Organization | Organize raw datasets within the repository and establish consistent folder structures and naming conventions for raw data, processed data, and outputs. | Weimo Song | March 22, 2026 |
-| Data Integration | Integrate the two datasets using the shared `date` attribute and construct a unified time-series dataset. Document the integration logic and schema alignment. | Weimo Song | March 26, 2026 |
-| Interim Status Report | Prepare and submit the interim project report summarizing the datasets, integration progress, and preliminary observations. | Weimo Song & Andy Dong | March 31, 2026 |
-| Data Quality Profiling | Examine the integrated dataset to identify potential quality issues such as missing observations, inconsistent temporal coverage, or frequency mismatches between sources. | Weimo Song & Andy Dong | April 5, 2026 |
-| Data Cleaning | Implement scripts to address identified data quality issues, standardize variable formats, and prepare the dataset for analysis. | Weimo Song & Andy Dong | April 12, 2026 |
-| Data Analysis and Visualization | Conduct exploratory analysis of the integrated dataset and generate visualizations illustrating the relationship between the Federal Funds Rate and S&P 500 performance. | Andy Dong | April 19, 2026 |
-| Metadata and Data Documentation | Prepare dataset documentation, including variable descriptions, data dictionary elements, and explanations of the integration and analysis workflow. | Andy Dong | April 26, 2026 |
-| Final Report  | Compile the final project report, finalize visualizations and analysis outputs, and ensure the repository includes all required artifacts and reproducibility documentation. Publish the final GitHub release containing the report, datasets, scripts, and documentation required to reproduce the project workflow. | Weimo Song & Andy Dong | May 3, 2026 |
+| Task | Description | Responsible | Target Completion | Status |
+|-----|-------------|-------------|------------------|--------|
+| Data Collection and Acquisition | Implement API-based data acquisition pipelines for FRED and Yahoo Finance; document source constraints, schema assumptions, and ensure reproducible retrieval. | Weimo Song | March 22, 2026 | Completed |
+| Storage and Organization | Establish repository structure for raw and processed data; enforce consistent naming conventions and data organization to support downstream reproducibility. | Weimo Song | March 22, 2026 | Completed |
+| Data Integration | Perform schema matching and mapping; construct an integrated time-series dataset through record-level integration on the temporal attribute. | Weimo Song | April 5, 2026 | Completed |
+| Project Plan Revision | Revise project plan based on instructor feedback, refining terminology (e.g., schema heterogeneity, completeness) and specifying integration and data quality strategies. | Weimo Song & Andy Dong | April 12, 2026 | Completed |
+| Interim Status Report | Document project progress, integration design decisions, and updates to the project plan based on feedback. | Weimo Song & Andy Dong | April 14, 2026 | Completed |
+| Data Quality Profiling | Conduct data profiling to assess completeness, consistency, and temporal coverage; identify quality issues across integrated sources. | Weimo Song & Andy Dong | April 19, 2026 | In Progress |
+| Data Cleaning | Apply rule-based data cleaning (error detection and repair) to address missingness, inconsistencies, and format standardization. | Weimo Song & Andy Dong | April 19, 2026 | Not Started |
+| Data Analysis and Visualization | Perform exploratory data analysis and generate visualizations to examine relationships between variables. | Andy Dong | April 26, 2026 | Not Started |
+| Metadata and Data Documentation | Develop metadata, data dictionary, and workflow documentation to support interpretability and reuse. | Andy Dong | May 3, 2026 | Not Started |
+| Final Report | Finalize analysis, compile report, and publish reproducible project artifacts (data, scripts, documentation) via GitHub release. | Weimo Song & Andy Dong | May 3, 2026 | Not Started |
 
 ---
 
 ## Constraints
 
-Several limitations and challenges may affect this project, particularly those related to differences in dataset structure, temporal coverage, and the nature of financial time-series data.
+This project faces several constraints related to **schema heterogeneity**, **data quality**, and **data acquisition assumptions**, which directly affect the fitness-for-use of the integrated dataset.
 
-1. **Differences in temporal frequency between the datasets**
+### 1. Temporal Granularity Mismatch and Completeness
 
-   - The Federal Funds Rate dataset from FRED includes observations for all calendar days, whereas the S&P 500 dataset from Yahoo Finance includes only **trading days** when financial markets are open. This discrepancy may lead to missing values or misaligned observations when integrating the datasets, requiring careful handling during the data integration and cleaning stages.
+- The FRED dataset contains **calendar-day observations**, while the S&P 500 dataset contains only **trading-day observations**. This represents both **schema heterogeneity** (different temporal representations) and a **completeness issue** in the integrated dataset.
 
-2. **Differences in temporal coverage**
+- **Our handling approach:**
+  - We will adopt the S&P 500 trading calendar as the reference schema and perform a **schema-level alignment** by mapping Federal Funds Rate observations onto trading days.
+  - We will conduct **data profiling** to quantify temporal completeness (e.g., number of dropped observations).
 
-   - The S&P 500 dataset from Yahoo Finance extends back to 1927, while the Federal Funds Rate series from FRED begins in 1954. As a result, the integrated dataset will necessarily be restricted to the overlapping time period beginning in 1954. This reduces the historical range available for analysis.
+- **Impact:**
+  - We will lose non-trading-day observations (weekends/holidays), reducing **population completeness**, but gain a dataset aligned with market activity, improving analytical validity.
+  - This reflects the course principle that **“no neutral integration exists”**—we trade completeness for consistency.
 
-3. **Technical constraints related to programmatic data acquisition**
+### 2. Differences in Temporal Coverage
 
-   - Both datasets are retrieved through external data services, and changes in API behavior, data formats, or access policies could affect the ability to automatically retrieve the data in the future. Ensuring that acquisition scripts remain robust and well documented will therefore be important for maintaining reproducibility.
+- The datasets have different historical coverage (1927 vs. 1954), creating a **temporal completeness constraint**.
 
-4. **Limited variable scope**
+- **Our handling approach:**
+  - Restrict the integrated dataset to the overlapping period (post-1954).
+  - Explicitly document this as a **population completeness reduction** and justify it based on analytical needs.
 
-   - The project currently focuses on two key variables—interest rates and stock market index values—which may not capture all factors influencing stock market movements. Macroeconomic variables such as inflation, unemployment, or economic growth may also affect market performance. Additionally, major events such as financial crises and geopolitical developments can also cause market volatility, although these effects are often difficult to quantify and systematically model. However, incorporating additional datasets is beyond the current scope of this project.
+- **Impact:**
+  - We lose earlier S&P 500 observations, limiting long-term analysis but ensuring consistent joint observations.
 
----
+### 3. Data Acquisition and Source Assumptions
+
+- Both datasets are **secondary observational data**, meaning we inherit structural and quality assumptions from external providers.
+
+- **Our handling approach:**
+  - Document API behavior, schema, and update frequency.
+  - Preserve raw data snapshots to ensure **reproducibility and integrity**.
+
+- **Impact:**
+  - Reduces risk of future schema drift and improves transparency in data provenance.
+
+### 4. Limited Variable Scope and Analytical Validity
+
+- The dataset includes only two variables, which may limit explanatory power.
+
+- **Our handling approach:**
+  - Frame the dataset explicitly as **fit-for-purpose** for exploratory analysis rather than causal inference.
+  - Use documentation to clarify scope limitations.
+
+- **Impact:**
+  - Ensures correct interpretation of results while maintaining project feasibility.
 
 ## Gaps
 
-While the current project plan outlines the main workflow and datasets, several areas remain open for further refinement as the project progresses.
+While the project plan establishes a clear workflow, several higher-level gaps remain that relate to the datasets, their interpretation, and our evolving understanding of the data lifecycle.
 
-1. **Choice of analytical methods**
+### 1. Dataset-level completeness and representativeness  
 
-   - At this stage, the project primarily focuses on integrating datasets and performing exploratory analysis. Additional input may be needed to determine whether more advanced analytical approaches—such as correlation analysis, lagged comparisons, or trend analysis—should be used to better understand the relationship between interest rates and stock market performance.
+   - Although we identified temporal coverage differences, we have not fully assessed whether the integrated dataset adequately represents the underlying economic phenomena. In particular, limiting the data to overlapping periods and trading days may introduce systematic bias in what is observed versus omitted.  
 
-2. **Potential need for additional economic indicators**
+   - **Plan:** we will evaluate dataset coverage using data quality dimensions such as population and temporal completeness, and document how integration choices shape what the dataset ultimately represents.
 
-   - The current dataset includes only the Federal Funds Rate and the S&P 500 index. During the analysis stage, it may become necessary to incorporate additional macroeconomic variables (such as inflation, unemployment, or recession indicators) if the relationship between interest rates and market performance cannot be adequately interpreted using the existing variables.
+### 2. Dependence on externally structured data  
 
-3. **Representativeness of the S&P 500**
+   - Both datasets are secondary data sources, meaning we inherit modeling decisions (e.g., how rates and prices are recorded, what counts as an observation) that may not fully align with our analytical goals.  
 
-   - The project uses the S&P 500 index as a proxy for overall U.S. stock market performance. However, the S&P 500 primarily tracks large-cap publicly traded companies and may not fully represent the performance of small and medium-sized enterprises (SMEs) or the broader U.S. business landscape. Therefore, the observed relationship between interest rate changes and stock market movements may majorly reflect trends specific to large firms rather than the entire economy. In the analysis phase, we may need to include other indices, such as the S&P SmallCap 600 and the S&P MidCap 400 indices, to gain a more comprehensive understanding of the relationship between interest rates and stock market performance.
+   - **Plan:** we will critically examine source assumptions and document how these affect schema design, integration choices, and interpretation.
 
-4. **Interpretation of economic relationships**
+### 3. Conceptual alignment between data and real-world phenomena  
 
-   - Financial markets are influenced by many interacting factors, and interpreting observed patterns between interest rates and stock market movements may require additional economic context. Further input from economic literature or domain knowledge may therefore be needed when interpreting the results of the analysis.
+   - The mapping between variables (interest rates and market index values) and the real-world concepts they represent is not fully specified. This creates a gap between the conceptual model and the data model.  
+
+   - **Plan:** we will refine our conceptual understanding of entities, attributes, and relationships to ensure that the integrated dataset supports meaningful interpretation.
+
+### 4. Knowledge gap across the full data lifecycle  
+
+   - Some stages of the project (e.g., advanced integration methods, workflow automation, reproducibility, metadata) rely on concepts not yet covered in the course.  
+
+   - **Plan:** we will iteratively refine our approach as new topics are introduced, allowing the project to evolve alongside our technical understanding.
