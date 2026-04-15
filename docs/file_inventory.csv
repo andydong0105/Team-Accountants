@@ -1,0 +1,13 @@
+relative_path,parent_directory,file_name,suffix,size_bytes
+data/.DS_Store,data,.DS_Store,,6148
+data/output/README.md,data/output,README.md,.md,95
+data/processed/README.md,data/processed,README.md,.md,88
+data/processed/integrated_fred_sp500.csv,data/processed,integrated_fred_sp500.csv,.csv,2360203
+data/raw/CHECKSUMS.sha256,data/raw,CHECKSUMS.sha256,.sha256,270
+data/raw/README.md,data/raw,README.md,.md,153
+data/raw/fred_dff.csv,data/raw,fred_dff.csv,.csv,991770
+data/raw/fred_dff_raw.json,data/raw,fred_dff_raw.json,.json,3608405
+data/raw/sp500_raw.csv,data/raw,sp500_raw.csv,.csv,2209653
+docs/DATA_STRUCTURE.md,docs,DATA_STRUCTURE.md,.md,768
+docs/INTEGRATION_SUMMARY.md,docs,INTEGRATION_SUMMARY.md,.md,1078
+docs/file_inventory.csv,docs,file_inventory.csv,.csv,523
