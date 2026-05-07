@@ -1,0 +1,12 @@
+dataset,source_file,column_name,raw_dtype,non_missing_count,missing_count,missing_percent,example_value
+Federal Funds Effective Rate,data/raw/fred_dff.csv,realtime_start,object,26242,0,0.0,2026-05-06
+Federal Funds Effective Rate,data/raw/fred_dff.csv,realtime_end,object,26242,0,0.0,2026-05-06
+Federal Funds Effective Rate,data/raw/fred_dff.csv,date,object,26242,0,0.0,1954-07-01
+Federal Funds Effective Rate,data/raw/fred_dff.csv,value,float64,26242,0,0.0,1.13
+S&P 500 Index,data/raw/sp500_raw.csv,date,object,24703,0,0.0,1927-12-30
+S&P 500 Index,data/raw/sp500_raw.csv,adj_close,float64,24703,0,0.0,17.65999984741211
+S&P 500 Index,data/raw/sp500_raw.csv,close,float64,24703,0,0.0,17.65999984741211
+S&P 500 Index,data/raw/sp500_raw.csv,high,float64,24703,0,0.0,17.65999984741211
+S&P 500 Index,data/raw/sp500_raw.csv,low,float64,24703,0,0.0,17.65999984741211
+S&P 500 Index,data/raw/sp500_raw.csv,open,float64,24703,0,0.0,17.65999984741211
+S&P 500 Index,data/raw/sp500_raw.csv,volume,int64,24703,0,0.0,0

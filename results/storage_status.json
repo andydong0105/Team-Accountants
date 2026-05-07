@@ -1,0 +1,101 @@
+{
+  "generated_at_utc": "2026-05-07T01:32:02.616594+00:00",
+  "project_root": "/Users/momo/Documents/Study/Computer Science/IS 477/Project/Team-Accountants",
+  "standard_directories": [
+    "data",
+    "data/raw",
+    "data/processed",
+    "scripts",
+    "docs",
+    "results",
+    "figures",
+    "metadata"
+  ],
+  "expected_root_files": [
+    "Snakefile",
+    "requirements.txt",
+    "pip_freeze.txt",
+    "LICENSE",
+    "LICENSE-DOCUMENTATION.md",
+    "CITATION.cff"
+  ],
+  "expected_raw_files": [
+    "data/raw/fred_dff_raw.json",
+    "data/raw/fred_dff.csv",
+    "data/raw/sp500_raw.csv",
+    "data/raw/CHECKSUMS.sha256",
+    "data/raw/acquisition_metadata.json"
+  ],
+  "expected_processed_files": [
+    "data/processed/fred_dff_clean.csv",
+    "data/processed/sp500_clean.csv",
+    "data/processed/integrated_fred_sp500.csv"
+  ],
+  "expected_script_files": [
+    "scripts/acquire_data.py",
+    "scripts/storage_and_organization.py",
+    "scripts/data_quality.py",
+    "scripts/data_cleaning.py",
+    "scripts/data_integration.py",
+    "scripts/analyze_data.py",
+    "scripts/visualize_data.py"
+  ],
+  "expected_result_files": [
+    "results/storage_status.json",
+    "results/checksum_verification.csv",
+    "results/data_quality_summary.csv",
+    "results/missingness_summary.csv",
+    "results/date_coverage_summary.csv",
+    "results/schema_summary.csv",
+    "results/temporal_alignment_profile.csv",
+    "results/cleaning_summary.csv",
+    "results/cleaning_decisions.csv",
+    "results/integration_summary.csv",
+    "results/integration_quality_checks.csv",
+    "results/summary_statistics.csv",
+    "results/correlation_results.csv",
+    "results/rate_change_analysis.csv",
+    "results/period_summary.csv",
+    "results/analysis_findings_summary.csv",
+    "results/visualization_summary.csv"
+  ],
+  "expected_figure_files": [
+    "figures/fed_funds_rate_trend.png",
+    "figures/sp500_close_trend.png",
+    "figures/sp500_daily_returns.png",
+    "figures/fed_funds_rate_vs_sp500_return.png",
+    "figures/average_return_by_rate_direction.png"
+  ],
+  "expected_doc_files": [
+    "docs/DATA_STRUCTURE.md",
+    "docs/file_inventory.csv",
+    "docs/WORKFLOW.md",
+    "docs/data_dictionary.md",
+    "docs/data_quality_profile.md",
+    "docs/cleaning_provenance.md",
+    "docs/INTEGRATION_SUMMARY.md",
+    "docs/ANALYSIS_SUMMARY.md",
+    "docs/VISUALIZATION_SUMMARY.md"
+  ],
+  "expected_metadata_files": [
+    "metadata/metadata.json"
+  ],
+  "missing_files_by_category": {
+    "root_files": [],
+    "raw_files": [],
+    "processed_files": [],
+    "script_files": [],
+    "result_files": [
+      "results/storage_status.json"
+    ],
+    "figure_files": [],
+    "doc_files": [
+      "docs/DATA_STRUCTURE.md",
+      "docs/file_inventory.csv"
+    ],
+    "metadata_files": []
+  },
+  "total_missing_file_count": 3,
+  "status": "ok",
+  "note": "Missing root, result, figure, doc, or metadata files may indicate that optional documentation or later workflow outputs have not yet been generated. Missing raw or script files prevent reproduction."
+}

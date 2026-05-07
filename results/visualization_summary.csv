@@ -1,0 +1,6 @@
+figure_file,exists,description,input_file,date_range,observation_count
+figures/fed_funds_rate_trend.png,True,Line chart showing the Federal Funds Effective Rate over the integrated date range.,data/processed/integrated_fred_sp500.csv,1954-07-01 to 2026-05-05,18082
+figures/sp500_close_trend.png,True,Line chart showing the S&P 500 closing index level over the integrated date range.,data/processed/integrated_fred_sp500.csv,1954-07-01 to 2026-05-05,18082
+figures/sp500_daily_returns.png,True,Line chart showing daily S&P 500 returns over time.,data/processed/integrated_fred_sp500.csv,1954-07-01 to 2026-05-05,18082
+figures/fed_funds_rate_vs_sp500_return.png,True,Scatter plot comparing Federal Funds Rate level with S&P 500 daily return.,data/processed/integrated_fred_sp500.csv,1954-07-01 to 2026-05-05,18082
+figures/average_return_by_rate_direction.png,True,Bar chart comparing average S&P 500 daily return across Federal Funds Rate direction categories.,data/processed/integrated_fred_sp500.csv,1954-07-01 to 2026-05-05,18082

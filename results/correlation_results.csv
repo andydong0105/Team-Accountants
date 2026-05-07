@@ -1,0 +1,5 @@
+x_variable,y_variable,method,non_missing_pair_count,correlation,description,interpretation_note
+federal_funds_rate,sp500_daily_return,pearson,18081,-0.014535955656472472,Correlation between rate level and simple daily S&P 500 return,Exploratory association only; this is not a causal estimate.
+federal_funds_rate_change,sp500_daily_return,pearson,18081,-0.014844521388549803,Correlation between rate change and simple daily S&P 500 return,Exploratory association only; this is not a causal estimate.
+federal_funds_rate,sp500_log_return,pearson,18081,-0.013842015931115571,Correlation between rate level and S&P 500 log return,Exploratory association only; this is not a causal estimate.
+federal_funds_rate_change,sp500_log_return,pearson,18081,-0.014658017410405419,Correlation between rate change and S&P 500 log return,Exploratory association only; this is not a causal estimate.

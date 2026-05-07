@@ -1,0 +1,16 @@
+finding,value,description
+integrated_dataset_observations,18082,Number of trading-day observations in the final integrated dataset.
+integrated_dataset_date_range,1954-07-01 to 2026-05-05,Date range covered by the final integrated dataset.
+first_valid_return_date,1954-07-02,First date with a non-missing S&P 500 daily return.
+sp500_start_close,29.209999084472656,S&P 500 close on the first integrated observation.
+sp500_end_close,7259.22021484375,S&P 500 close on the final integrated observation.
+total_sp500_return_over_integrated_period,247.51833078976642,Total S&P 500 return over the integrated date range.
+federal_funds_rate_min,0.04,Minimum Federal Funds Rate in the integrated dataset.
+federal_funds_rate_max,22.36,Maximum Federal Funds Rate in the integrated dataset.
+federal_funds_rate_mean,4.600146001548501,Average Federal Funds Rate in the integrated dataset.
+average_sp500_daily_return,0.00035622605001860624,Average S&P 500 daily return in the integrated dataset.
+sp500_daily_return_standard_deviation,0.010089257666618251,Standard deviation of S&P 500 daily returns.
+correlation_rate_level_and_daily_return,-0.014535955656472472,Pearson correlation between Federal Funds Rate level and S&P 500 daily return.
+correlation_rate_change_and_daily_return,-0.014844521388549803,Pearson correlation between Federal Funds Rate daily change and S&P 500 daily return.
+rate_direction_counts,"{'decrease': 6184, 'no_change': 6136, 'increase': 5761, 'first_observation': 1}",Number of observations by Federal Funds Rate direction category.
+zero_volume_rows_retained,1,Zero-volume rows retained and flagged in the integrated dataset.

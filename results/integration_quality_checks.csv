@@ -1,0 +1,8 @@
+check,value,status,notes
+integrated_dataset_exists,True,pass,Final integrated CSV was written.
+row_count_positive,18082,pass,Integrated dataset should contain at least one row.
+duplicate_dates,0,pass,Final dataset should have one row per trading date.
+missing_sp500_close,0,pass,S&P 500 close is required for analysis.
+missing_federal_funds_rate,0,pass,Federal Funds Rate is required for analysis.
+missing_sp500_daily_return,1,pass,One missing return is expected for the first observation.
+missing_federal_funds_rate_change,1,pass,One missing rate change is expected for the first observation.

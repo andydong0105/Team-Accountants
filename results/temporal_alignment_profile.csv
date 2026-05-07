@@ -1,0 +1,14 @@
+metric,value,notes
+fred_unique_dates,26242,Unique raw dates in the FRED DFF dataset.
+sp500_unique_dates,24703,Unique raw dates in the S&P 500 dataset.
+overlapping_dates,18082,Raw dates present in both datasets before cleaning or integration.
+fred_only_dates,8160,Dates present in FRED but not in S&P 500. Many of these are expected because FRED is calendar-day data while S&P 500 is trading-day data.
+sp500_only_dates,6621,"Dates present in S&P 500 but not in FRED. In this project, these primarily reflect S&P 500 observations before the FRED DFF series begins."
+sp500_dates_before_fred_start,6620,S&P 500 raw dates earlier than the first FRED DFF date.
+sp500_dates_after_fred_end,1,S&P 500 raw dates later than the final FRED DFF date.
+fred_date_min,1954-07-01,Earliest FRED raw date.
+fred_date_max,2026-05-05,Latest FRED raw date.
+sp500_date_min,1927-12-30,Earliest S&P 500 raw date.
+sp500_date_max,2026-05-06,Latest S&P 500 raw date.
+overlap_date_min,1954-07-01,Earliest date shared by both raw datasets.
+overlap_date_max,2026-05-05,Latest date shared by both raw datasets.

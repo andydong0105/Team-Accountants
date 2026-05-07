@@ -1,0 +1,3 @@
+dataset,source_file,expected_frequency,date_min,date_max,row_count,unique_date_count,full_calendar_days_between_min_max,missing_calendar_dates_between_min_max,calendar_coverage_ratio,weekend_observation_count,monday_rows,tuesday_rows,wednesday_rows,thursday_rows,friday_rows,saturday_rows,sunday_rows
+Federal Funds Effective Rate,data/raw/fred_dff.csv,calendar-day daily,1954-07-01,2026-05-05,26242,26242,26242,0,1.0,7498,3749,3749,3748,3749,3749,3749,3749
+S&P 500 Index,data/raw/sp500_raw.csv,trading-day daily,1927-12-30,2026-05-06,24703,24703,35923,11220,0.687665,0,4751,5019,5036,4958,4939,0,0

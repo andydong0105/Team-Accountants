@@ -1,0 +1,32 @@
+cff-version: 1.2.0
+message: "If you use this project, please cite it using the metadata below."
+title: "Federal Funds Rate and S&P 500 Market Performance"
+type: software
+authors:
+  - family-names: Song
+    given-names: Weimo
+  - family-names: Dong
+    given-names: Andy
+abstract: "A reproducible IS 477 final project integrating Federal Funds Effective Rate data from FRED with S&P 500 market data from Yahoo Finance via yfinance. The project documents data acquisition, checksum verification, quality profiling, cleaning, temporal alignment, integration, exploratory analysis, visualization, and Snakemake workflow automation."
+keywords:
+  - Federal Funds Effective Rate
+  - FRED
+  - S&P 500
+  - data curation
+  - data integration
+  - reproducibility
+  - Snakemake
+license: MIT
+version: 1.0.0
+date-released: 2026-05-06
+repository-code: "https://github.com/andydong0105/Team-Accountants"
+preferred-citation:
+  type: software
+  title: "Federal Funds Rate and S&P 500 Market Performance"
+  authors:
+    - family-names: Song
+      given-names: Weimo
+    - family-names: Dong
+      given-names: Andy
+  year: 2026
+  repository-code: "https://github.com/andydong0105/Team-Accountants"

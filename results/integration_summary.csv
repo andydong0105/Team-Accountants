@@ -1,0 +1,24 @@
+metric,value,notes
+fred_clean_rows,26242,Rows in cleaned FRED DFF dataset before integration.
+sp500_clean_rows,24703,Rows in cleaned S&P 500 dataset before integration.
+fred_date_min,1954-07-01,Earliest cleaned FRED date.
+fred_date_max,2026-05-05,Latest cleaned FRED date.
+sp500_date_min,1927-12-30,Earliest cleaned S&P 500 date.
+sp500_date_max,2026-05-06,Latest cleaned S&P 500 date.
+overlap_dates_before_range_filter,18082,Dates present in both cleaned datasets before restricting the S&P 500 range.
+fred_only_dates_before_range_filter,8160,"Cleaned FRED dates not present in the cleaned S&P 500 dataset, mostly non-trading days."
+sp500_only_dates_before_range_filter,6621,"Cleaned S&P 500 dates not present in FRED, primarily dates before FRED DFF begins."
+sp500_rows_before_fred_start_removed,6620,S&P 500 observations removed because they predate the FRED DFF series.
+sp500_rows_after_fred_end_removed,1,S&P 500 observations removed because they fall after the FRED DFF series end date.
+sp500_rows_inside_fred_range,18082,S&P 500 trading-day observations within the FRED date range.
+integrated_rows,18082,Rows in the final integrated dataset.
+integrated_date_min,1954-07-01,Earliest date in the final integrated dataset.
+integrated_date_max,2026-05-05,Latest date in the final integrated dataset.
+unmatched_rows_after_merge,0,S&P 500 trading dates within the FRED range that did not receive a FRED rate.
+missing_federal_funds_rate_after_merge,0,Missing rate values in the final integrated dataset.
+missing_sp500_close_after_merge,0,Missing S&P 500 close values in the final integrated dataset.
+missing_sp500_daily_return_rows,1,"Rows with missing daily return, expected for the first observation."
+missing_federal_funds_rate_change_rows,1,"Rows with missing rate change, expected for the first observation."
+zero_volume_rows_in_integrated_dataset,1,S&P 500 zero-volume rows retained and flagged in the final integrated dataset.
+sp500_retention_rate_after_fred_range_filter,0.7319758733757034,Share of cleaned S&P 500 rows retained after limiting to the FRED date range.
+merge_success_rate_within_fred_range,1.0,Share of in-range S&P 500 rows successfully matched to FRED observations.

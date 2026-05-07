@@ -1,0 +1,352 @@
+{
+  "@context": {
+    "schema": "https://schema.org/",
+    "dcat": "https://www.w3.org/ns/dcat#",
+    "dct": "http://purl.org/dc/terms/"
+  },
+  "@type": "schema:Dataset",
+  "name": "Federal Funds Rate and S&P 500 Market Performance",
+  "alternateName": "FRED DFF and S&P 500 Integrated Dataset",
+  "description": "This project creates a reproducible data curation and exploratory analysis workflow integrating the Federal Funds Effective Rate from FRED with S&P 500 market data from Yahoo Finance through yfinance. The workflow documents data acquisition, checksum verification, raw data quality profiling, cleaning, temporal alignment, integration, analysis, visualization, and workflow automation using Snakemake. The main curation challenge is aligning a calendar-day interest-rate series with a trading-day stock market series.",
+  "keywords": [
+    "Federal Funds Effective Rate",
+    "FRED",
+    "DFF",
+    "S&P 500",
+    "Yahoo Finance",
+    "yfinance",
+    "data curation",
+    "data integration",
+    "time series",
+    "reproducibility",
+    "Snakemake",
+    "IS 477"
+  ],
+  "creator": [
+    {
+      "@type": "schema:Person",
+      "name": "Weimo Song"
+    },
+    {
+      "@type": "schema:Person",
+      "name": "Andy Dong"
+    }
+  ],
+  "contributor": [
+    {
+      "@type": "schema:Person",
+      "name": "Weimo Song"
+    },
+    {
+      "@type": "schema:Person",
+      "name": "Andy Dong"
+    }
+  ],
+  "license": [
+    {
+      "@type": "schema:CreativeWork",
+      "name": "MIT License for project code",
+      "url": "https://opensource.org/license/mit/"
+    },
+    {
+      "@type": "schema:CreativeWork",
+      "name": "CC BY 4.0 License for project documentation",
+      "url": "https://creativecommons.org/licenses/by/4.0/"
+    }
+  ],
+  "isBasedOn": [
+    {
+      "@type": "schema:Dataset",
+      "name": "Federal Funds Effective Rate",
+      "alternateName": "FRED DFF",
+      "identifier": "DFF",
+      "publisher": {
+        "@type": "schema:Organization",
+        "name": "Federal Reserve Bank of St. Louis"
+      },
+      "url": "https://fred.stlouisfed.org/series/DFF",
+      "description": "Daily Federal Funds Effective Rate observations acquired from the FRED API."
+    },
+    {
+      "@type": "schema:Dataset",
+      "name": "S&P 500 Index",
+      "alternateName": "^GSPC",
+      "publisher": {
+        "@type": "schema:Organization",
+        "name": "Yahoo Finance"
+      },
+      "url": "https://finance.yahoo.com/quote/%5EGSPC/",
+      "description": "S&P 500 market data acquired through the yfinance Python package."
+    }
+  ],
+  "temporalCoverage": "1954-07-01/2026-05-05",
+  "spatialCoverage": {
+    "@type": "schema:Place",
+    "name": "United States"
+  },
+  "variableMeasured": [
+    {
+      "@type": "schema:PropertyValue",
+      "name": "date",
+      "description": "Date used as the integration key. In the integrated dataset, each row represents one S&P 500 trading day."
+    },
+    {
+      "@type": "schema:PropertyValue",
+      "name": "sp500_close",
+      "description": "S&P 500 closing index level on the trading date."
+    },
+    {
+      "@type": "schema:PropertyValue",
+      "name": "sp500_daily_return",
+      "description": "Daily simple return calculated from S&P 500 closing index levels."
+    },
+    {
+      "@type": "schema:PropertyValue",
+      "name": "sp500_log_return",
+      "description": "Daily log return calculated from S&P 500 closing index levels."
+    },
+    {
+      "@type": "schema:PropertyValue",
+      "name": "sp500_zero_volume_flag",
+      "description": "Binary flag identifying rows where the original S&P 500 volume field was reported as zero."
+    },
+    {
+      "@type": "schema:PropertyValue",
+      "name": "federal_funds_rate",
+      "description": "Federal Funds Effective Rate matched to the S&P 500 trading date. Unit: percent."
+    },
+    {
+      "@type": "schema:PropertyValue",
+      "name": "federal_funds_rate_change",
+      "description": "Change in the Federal Funds Effective Rate from the previous integrated trading-day observation. Unit: percentage points."
+    },
+    {
+      "@type": "schema:PropertyValue",
+      "name": "federal_funds_rate_direction",
+      "description": "Categorical direction of Federal Funds Rate change: increase, decrease, no_change, or first_observation."
+    }
+  ],
+  "distribution": [
+    {
+      "@type": "schema:DataDownload",
+      "name": "FRED DFF raw JSON",
+      "encodingFormat": "application/json",
+      "contentUrl": "data/raw/fred_dff_raw.json",
+      "description": "Raw JSON response from the FRED API.",
+      "contentSize": "3614433 bytes"
+    },
+    {
+      "@type": "schema:DataDownload",
+      "name": "FRED DFF raw CSV",
+      "encodingFormat": "text/csv",
+      "contentUrl": "data/raw/fred_dff.csv",
+      "description": "Raw Federal Funds Effective Rate observations converted to CSV.",
+      "contentSize": "993442 bytes"
+    },
+    {
+      "@type": "schema:DataDownload",
+      "name": "S&P 500 raw CSV",
+      "encodingFormat": "text/csv",
+      "contentUrl": "data/raw/sp500_raw.csv",
+      "description": "Raw S&P 500 market data acquired through yfinance.",
+      "contentSize": "2648861 bytes"
+    },
+    {
+      "@type": "schema:DataDownload",
+      "name": "Cleaned FRED DFF dataset",
+      "encodingFormat": "text/csv",
+      "contentUrl": "data/processed/fred_dff_clean.csv",
+      "description": "Cleaned Federal Funds Effective Rate dataset.",
+      "contentSize": "416103 bytes"
+    },
+    {
+      "@type": "schema:DataDownload",
+      "name": "Cleaned S&P 500 dataset",
+      "encodingFormat": "text/csv",
+      "contentUrl": "data/processed/sp500_clean.csv",
+      "description": "Cleaned S&P 500 market dataset.",
+      "contentSize": "2691066 bytes"
+    },
+    {
+      "@type": "schema:DataDownload",
+      "name": "Integrated FRED and S&P 500 dataset",
+      "encodingFormat": "text/csv",
+      "contentUrl": "data/processed/integrated_fred_sp500.csv",
+      "description": "Final analysis-ready integrated dataset.",
+      "contentSize": "1834599 bytes"
+    },
+    {
+      "@type": "schema:DataDownload",
+      "name": "Data dictionary",
+      "encodingFormat": "text/markdown",
+      "contentUrl": "docs/data_dictionary.md",
+      "description": "Human-readable data dictionary for project datasets and variables.",
+      "contentSize": "10409 bytes"
+    },
+    {
+      "@type": "schema:DataDownload",
+      "name": "Workflow documentation",
+      "encodingFormat": "text/markdown",
+      "contentUrl": "docs/WORKFLOW.md",
+      "description": "Documentation explaining how the workflow is organized and executed.",
+      "contentSize": "12590 bytes"
+    },
+    {
+      "@type": "schema:DataDownload",
+      "name": "Raw data quality profile",
+      "encodingFormat": "text/markdown",
+      "contentUrl": "docs/data_quality_profile.md",
+      "description": "Human-readable summary of raw data quality assessment results.",
+      "contentSize": "3798 bytes"
+    },
+    {
+      "@type": "schema:DataDownload",
+      "name": "Cleaning provenance documentation",
+      "encodingFormat": "text/markdown",
+      "contentUrl": "docs/cleaning_provenance.md",
+      "description": "Human-readable documentation of data cleaning decisions and provenance.",
+      "contentSize": "4398 bytes"
+    },
+    {
+      "@type": "schema:DataDownload",
+      "name": "Integration summary",
+      "encodingFormat": "text/markdown",
+      "contentUrl": "docs/integration_summary.md",
+      "description": "Documentation of dataset alignment and integration results.",
+      "contentSize": "3733 bytes"
+    },
+    {
+      "@type": "schema:DataDownload",
+      "name": "Checksum verification results",
+      "encodingFormat": "text/csv",
+      "contentUrl": "results/checksum_verification.csv",
+      "description": "CSV record of SHA-256 checksum verification results.",
+      "contentSize": "594 bytes"
+    },
+    {
+      "@type": "schema:DataDownload",
+      "name": "Analysis summary",
+      "encodingFormat": "text/markdown",
+      "contentUrl": "results/analysis_summary.md",
+      "description": "Summary of analysis results generated by the analysis script."
+    }
+  ],
+  "measurementTechnique": [
+    "Programmatic data acquisition using Python requests and yfinance",
+    "SHA-256 checksum generation and verification",
+    "Raw data quality profiling",
+    "Script-based data cleaning",
+    "Date-key integration using S&P 500 trading days as the base timeline",
+    "Exploratory descriptive analysis",
+    "Visualization generation using matplotlib",
+    "Snakemake workflow automation"
+  ],
+  "softwareRequirements": [
+    "Python 3.10 or higher",
+    "pandas",
+    "numpy",
+    "matplotlib",
+    "requests",
+    "yfinance",
+    "snakemake"
+  ],
+  "programmingLanguage": "Python",
+  "runtimePlatform": "Python 3",
+  "includedInDataCatalog": {
+    "@type": "schema:DataCatalog",
+    "name": "IS 477 Final Project Repository"
+  },
+  "hasPart": [
+    {
+      "@type": "schema:SoftwareSourceCode",
+      "name": "Data acquisition script",
+      "programmingLanguage": "Python",
+      "codeRepository": "scripts/acquire_data.py"
+    },
+    {
+      "@type": "schema:SoftwareSourceCode",
+      "name": "Raw data quality profiling script",
+      "programmingLanguage": "Python",
+      "codeRepository": "scripts/data_quality.py"
+    },
+    {
+      "@type": "schema:SoftwareSourceCode",
+      "name": "Data cleaning script",
+      "programmingLanguage": "Python",
+      "codeRepository": "scripts/data_cleaning.py"
+    },
+    {
+      "@type": "schema:SoftwareSourceCode",
+      "name": "Data integration script",
+      "programmingLanguage": "Python",
+      "codeRepository": "scripts/data_integration.py"
+    },
+    {
+      "@type": "schema:SoftwareSourceCode",
+      "name": "Data analysis script",
+      "programmingLanguage": "Python",
+      "codeRepository": "scripts/analyze_data.py"
+    },
+    {
+      "@type": "schema:SoftwareSourceCode",
+      "name": "Visualization script",
+      "programmingLanguage": "Python",
+      "codeRepository": "scripts/visualize_data.py"
+    },
+    {
+      "@type": "schema:SoftwareSourceCode",
+      "name": "Project metadata generation script",
+      "programmingLanguage": "Python",
+      "codeRepository": "scripts/update_metadata.py"
+    },
+    {
+      "@type": "schema:SoftwareSourceCode",
+      "name": "Snakemake workflow",
+      "programmingLanguage": "Snakemake",
+      "codeRepository": "Snakefile"
+    }
+  ],
+  "mainEntity": {
+    "@type": "schema:Dataset",
+    "name": "Integrated FRED DFF and S&P 500 Dataset",
+    "encodingFormat": "text/csv",
+    "contentUrl": "data/processed/integrated_fred_sp500.csv",
+    "description": "Final analysis-ready dataset containing one row per S&P 500 trading day within the FRED DFF date range.",
+    "temporalCoverage": "1954-07-01/2026-05-05",
+    "numberOfItems": 18082,
+    "numberOfVariables": 8
+  },
+  "additionalProperty": [
+    {
+      "@type": "schema:PropertyValue",
+      "name": "row_count",
+      "value": 18082,
+      "description": "Number of rows in the integrated analysis-ready dataset."
+    },
+    {
+      "@type": "schema:PropertyValue",
+      "name": "column_count",
+      "value": 8,
+      "description": "Number of columns in the integrated analysis-ready dataset."
+    },
+    {
+      "@type": "schema:PropertyValue",
+      "name": "workflow_mode",
+      "value": "frozen by default; live mode optional",
+      "description": "The default workflow reproduces results from repository-included raw data. Live mode can reacquire current data when internet access and required API credentials are available."
+    }
+  ],
+  "dateCreated": "2026-05-06",
+  "dateModified": "2026-05-06",
+  "version": "1.0",
+  "inLanguage": "en-US",
+  "educationalUse": "IS 477 final project",
+  "isAccessibleForFree": true,
+  "conditionsOfAccess": "Raw and processed input data are included in the repository for reproducibility. Live data reacquisition may require internet access and a FRED API key.",
+  "citation": [
+    "Federal Reserve Bank of St. Louis. Federal Funds Effective Rate [DFF]. FRED, Federal Reserve Bank of St. Louis.",
+    "Yahoo Finance. S&P 500 Index (^GSPC). Accessed through the yfinance Python package.",
+    "The pandas development team. pandas: Powerful Python data analysis toolkit.",
+    "Mölder, F., et al. Sustainable data analysis with Snakemake."
+  ]
+}

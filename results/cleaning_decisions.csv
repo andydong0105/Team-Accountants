@@ -1,0 +1,9 @@
+dataset,issue_identified_by_quality_profile,cleaning_decision,reason,affects_row_removal
+Federal Funds Effective Rate,Calendar-day observations include weekends,Retain weekend observations,Weekend observations are expected for FRED DFF and are not data errors. Temporal mismatch is handled during integration.,no
+Federal Funds Effective Rate,Raw column name value is not analysis-specific,Rename value to federal_funds_rate,Clear variable names improve readability and downstream documentation.,no
+Federal Funds Effective Rate,Raw data includes realtime_start and realtime_end columns,Drop realtime fields from cleaned analysis file,The project analyzes observed rate values by date; realtime metadata remains preserved in raw files.,no
+S&P 500 Index,Trading-day series has missing calendar dates,Do not fill missing weekends or market holidays,Missing calendar days are expected because the stock market is closed on weekends and holidays. Creating artificial price records would distort market-return analysis.,no
+S&P 500 Index,Zero-volume rows in older observations,Retain zero-volume rows and add sp500_zero_volume_flag,The price fields remain useful for index-level analysis and volume is not the primary research variable.,no
+S&P 500 Index,Column names need analysis-ready format,Rename columns with sp500_ prefixes,Prefixed names prevent ambiguity after integration with the FRED dataset.,no
+Both datasets,Need stable data types for integration,Parse dates and convert numeric fields,"Stable date and numeric types are required for reliable quality assessment, integration, and analysis.",only if invalid values exist
+Both datasets,"Potential invalid, missing, or duplicate core records",Remove invalid/missing core rows and duplicate dates if present,A one-row-per-date structure is necessary for later time-series integration.,only if such rows exist
