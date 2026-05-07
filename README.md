@@ -337,3 +337,435 @@ However, any advanced model would still depend on careful data curation. The mai
 
 ---
 
+## 10. Challenges
+
+This project involved several challenges related to data integration, temporal completeness, reproducibility, and documentation consistency. Although both datasets came from reputable sources and were relatively clean at the raw-data level, the project showed that data curation challenges often emerge not from obvious errors, but from differences in how datasets define observations and represent real-world phenomena.
+
+### Temporal Granularity Mismatch
+
+The most important challenge was the temporal mismatch between the two datasets. The FRED Federal Funds Effective Rate dataset is a **calendar-day time series**, while the S&P 500 dataset is a **trading-day time series**. This created both **schema heterogeneity** and a **population completeness issue**. Both datasets contain a `date` field, but the field does not represent the same observational schedule in each source.
+
+To address this, we adopted the S&P 500 trading calendar as the reference relation and used a left join to attach Federal Funds Rate observations to trading days. This was a deliberate integration choice rather than a neutral technical step. It reduced completeness by excluding non-trading-day FRED observations, but it improved analytical validity because S&P 500 returns only exist when the market is open. This reflects an important course concept: **no integration decision is completely neutral**. We traded calendar-day completeness for a consistent market-centered observation unit.
+
+### Differences in Temporal Coverage
+
+A second challenge was the difference in historical coverage. S&P 500 data begins in 1927, while the FRED `DFF` series begins in 1954. As a result, many early S&P 500 observations could not be integrated with interest-rate data. We handled this by restricting the final integrated dataset to the overlapping period from 1954-07-01 through 2026-05-05. This creates a clear and reproducible population definition, but it also limits the scope of long-run historical analysis.
+
+### Dependence on Secondary Data Sources
+
+Both datasets are **secondary observational data**, so we inherit the source providers’ assumptions about schema, update schedules, and valid observations. FRED and Yahoo Finance are trustworthy sources, but future changes in APIs, package behavior, or data availability could affect live data acquisition. To reduce this risk, we preserved raw data snapshots, included checksum verification, and made frozen mode the default workflow. This allows the submitted results to be reproduced without depending on live API responses.
+
+### Reproducibility Versus Timeliness
+
+A major design challenge was balancing reproducibility with timeliness. Live data acquisition is useful because financial and economic data continue to update, but live mode can also change row counts, date ranges, metadata, and summary statistics. During the final workflow review, we found that some generated documentation could become outdated when live mode changed the dataset. We addressed this by making key documentation more dynamic, including the metadata generation process. The final workflow now treats `metadata/metadata.json` as a generated artifact that reflects the current integrated dataset.
+
+### Workflow and Documentation Alignment
+
+Finally, coordinating scripts, outputs, documentation, metadata, and repository organization required several rounds of revision. As the workflow became more complete, every generated output needed to stay consistent with the current data. This was especially challenging for row counts, temporal coverage, and live-mode-aware metadata. The final version addresses this by automating the workflow through Snakemake, preserving provenance files, and documenting manual assumptions directly in the README and supporting files.
+
+---
+
+## 11. Workflow and Reproducing
+
+This project is designed to be reproducible from the repository root. The workflow is automated with Snakemake through the root-level [`Snakefile`](Snakefile), and all project scripts are stored in [`scripts/`](scripts/). The workflow follows the data lifecycle from raw data inputs to final analysis outputs: data quality profiling, data cleaning, data integration, analysis, visualization, metadata generation, and storage documentation. The main purpose of this design is to make the project transparent enough that another user can reproduce the submitted results without manually repeating individual processing steps.
+
+The default reproduction mode is **frozen mode**. In frozen mode, the workflow uses the raw data files already included in [`data/raw/`](data/raw/). This is the recommended mode for grading because it reproduces the submitted project version without depending on updated external data sources. The project also supports an optional **live mode**, which reacquires current data from FRED and Yahoo Finance before rerunning the workflow. Live mode is useful for transparency and future reuse, but it may produce different row counts, date ranges, checksums, results, visualizations, and metadata because the source datasets may update over time.
+
+### System Requirements
+
+The project can be reproduced on macOS, Linux, or Windows with a standard Python environment. The recommended setup is:
+
+- Python 3.10 or higher
+- Git
+- Snakemake
+- Internet access only if using live mode
+- Approximately 100 MB of available disk space
+
+The required Python packages are listed in [`requirements.txt`](requirements.txt). A more detailed record of the development environment is provided in [`pip_freeze.txt`](pip_freeze.txt). The main dependencies include `pandas`, `numpy`, `matplotlib`, `requests`, `yfinance`, and `snakemake`.
+
+### Step 1: Clone the Repository
+
+Clone the repository and enter the project root:
+
+```bash
+git clone https://github.com/andydong0105/Team-Accountants.git
+cd Team-Accountants
+````
+
+After cloning, the root directory should include files and folders such as:
+
+```text
+data/
+docs/
+figures/
+metadata/
+results/
+scripts/
+Snakefile
+README.md
+requirements.txt
+pip_freeze.txt
+LICENSE
+LICENSE-DOCUMENTATION.md
+CITATION.cff
+```
+
+The final report is this root-level `README.md`. Previous milestone documents are stored separately so that they do not replace the final report.
+
+### Step 2: Create and Activate a Python Environment
+
+Using a virtual environment is recommended:
+
+```bash
+python3 -m venv venv
+source venv/bin/activate
+```
+
+On Windows, activate the environment with:
+
+```bash
+venv\Scripts\activate
+```
+
+Then install dependencies:
+
+```bash
+pip install -r requirements.txt
+```
+
+If Snakemake is not available after installing requirements, install it separately:
+
+```bash
+pip install snakemake
+```
+
+To confirm that the main packages are available, run:
+
+```bash
+python -c "import pandas, numpy, matplotlib, requests, yfinance; print('Dependencies loaded successfully')"
+```
+
+### Step 3: Verify Included Raw Data
+
+For the submitted project, no external data download is required in frozen mode. The raw input files are included in the repository under [`data/raw/`](data/raw/). Before running the workflow, confirm that the following files exist:
+
+```text
+data/raw/fred_dff_raw.json
+data/raw/fred_dff.csv
+data/raw/sp500_raw.csv
+data/raw/CHECKSUMS.sha256
+data/raw/acquisition_metadata.json
+```
+
+The workflow verifies raw-file integrity using SHA-256 checksums. The checksum verification output is written to:
+
+```text
+results/checksum_verification.csv
+```
+
+This step supports provenance by confirming that the raw files used for reproduction match the submitted project data.
+
+### Step 4: Run a Dry Run
+
+Before executing the workflow, it is useful to run a dry run. This checks that Snakemake can read the `Snakefile`, build the directed acyclic graph of jobs, and identify which rules would run:
+
+```bash
+snakemake --cores 1 -n
+```
+
+A successful dry run should show the workflow rules without actually executing the scripts. This is a safe way to confirm that the repository structure and dependencies are recognizable.
+
+### Step 5: Run the Default Frozen Workflow
+
+To reproduce the submitted project results using the included raw files, run:
+
+```bash
+snakemake --cores 1
+```
+
+This command uses frozen mode by default. It does not reacquire data from the internet. Snakemake checks the expected outputs and runs any missing or outdated steps. The workflow is organized around the default `run_all` rule, which lists all final required outputs.
+
+To force a complete rebuild from the included raw files, run:
+
+```bash
+snakemake --cores 1 --forceall
+```
+
+This reruns the workflow from raw data quality profiling through final documentation and metadata generation, while still using the raw data already stored in the repository.
+
+### Step 6: Optional Live Mode
+
+Live mode reacquires updated data from the original sources and then reruns the full workflow:
+
+```bash
+snakemake --cores 1 --config mode=live --forceall
+```
+
+Live mode runs [`scripts/acquire_data.py`](scripts/acquire_data.py), which retrieves the Federal Funds Effective Rate from FRED and S&P 500 data through `yfinance`. This mode requires internet access. Depending on the local configuration of the acquisition script, FRED acquisition may require a FRED API key through the `FRED_API_KEY` environment variable or a local `apikey.txt` file. A local API key file should not be committed to GitHub.
+
+Live mode is not recommended for reproducing the submitted version because it may update the dataset beyond the final report’s frozen results. It is included to show how the workflow can be reused and extended after submission.
+
+### Workflow Rules and Outputs
+
+The workflow is divided into script-based rules that correspond to data lifecycle stages.
+
+The `data_quality` rule runs [`scripts/data_quality.py`](scripts/data_quality.py). It profiles raw inputs and generates:
+
+```text
+results/data_quality_summary.csv
+results/missingness_summary.csv
+results/date_coverage_summary.csv
+results/schema_summary.csv
+results/temporal_alignment_profile.csv
+results/checksum_verification.csv
+docs/data_quality_profile.md
+```
+
+The `data_cleaning` rule runs [`scripts/data_cleaning.py`](scripts/data_cleaning.py). It standardizes dates, names, numeric fields, and source-specific quality flags, producing:
+
+```text
+data/processed/fred_dff_clean.csv
+data/processed/sp500_clean.csv
+results/cleaning_summary.csv
+results/cleaning_decisions.csv
+docs/cleaning_provenance.md
+```
+
+The `data_integration` rule runs [`scripts/data_integration.py`](scripts/data_integration.py). It aligns the cleaned datasets using `date`, uses S&P 500 trading days as the base timeline, and produces:
+
+```text
+data/processed/integrated_fred_sp500.csv
+results/integration_summary.csv
+results/integration_quality_checks.csv
+docs/INTEGRATION_SUMMARY.md
+```
+
+The `analyze_data` rule runs [`scripts/analyze_data.py`](scripts/analyze_data.py), generating descriptive results:
+
+```text
+results/summary_statistics.csv
+results/correlation_results.csv
+results/rate_change_analysis.csv
+results/period_summary.csv
+results/analysis_findings_summary.csv
+docs/ANALYSIS_SUMMARY.md
+```
+
+The `visualize_data` rule runs [`scripts/visualize_data.py`](scripts/visualize_data.py), generating figures:
+
+```text
+figures/fed_funds_rate_trend.png
+figures/sp500_close_trend.png
+figures/sp500_daily_returns.png
+figures/fed_funds_rate_vs_sp500_return.png
+figures/average_return_by_rate_direction.png
+results/visualization_summary.csv
+docs/VISUALIZATION_SUMMARY.md
+```
+
+The `update_metadata` rule runs [`scripts/update_metadata.py`](scripts/update_metadata.py), which creates the machine-readable metadata file:
+
+```text
+metadata/metadata.json
+```
+
+This rule is live-mode aware because it calculates temporal coverage and integrated dataset statistics from the current integrated dataset rather than relying on hard-coded dates.
+
+The `storage_and_organization` rule runs [`scripts/storage_and_organization.py`](scripts/storage_and_organization.py), generating repository documentation and file inventory:
+
+```text
+results/storage_status.json
+docs/DATA_STRUCTURE.md
+docs/file_inventory.csv
+data/raw/README.md
+data/processed/README.md
+results/README.md
+figures/README.md
+docs/README.md
+metadata/README.md
+```
+
+### Step 7: Verify Final Outputs
+
+After running the workflow, verify that the main outputs exist:
+
+```bash
+ls data/processed/
+ls results/
+ls figures/
+ls metadata/
+```
+
+At minimum, the following final artifacts should be present:
+
+```text
+data/processed/integrated_fred_sp500.csv
+results/summary_statistics.csv
+results/correlation_results.csv
+results/rate_change_analysis.csv
+figures/fed_funds_rate_trend.png
+figures/sp500_close_trend.png
+figures/sp500_daily_returns.png
+figures/fed_funds_rate_vs_sp500_return.png
+figures/average_return_by_rate_direction.png
+metadata/metadata.json
+```
+
+The submitted integrated dataset should contain 18,082 trading-day observations from 1954-07-01 through 2026-05-05. In frozen mode, the metadata temporal coverage should match this integrated dataset.
+
+### Troubleshooting
+
+If Snakemake reports that the directory is locked because a prior run was interrupted, unlock the workflow:
+
+```bash
+snakemake --unlock
+```
+
+If a command cannot find Snakemake, try:
+
+```bash
+python -m snakemake --cores 1
+```
+
+If live mode fails because of an API key or internet issue, use frozen mode instead. Frozen mode is the intended path for reproducing the submitted final project.
+
+### Reproduction Checklist
+
+Use the following checklist to confirm successful reproduction:
+
+* [ ] Repository cloned successfully
+* [ ] Python environment created and activated
+* [ ] Dependencies installed from `requirements.txt`
+* [ ] Raw files present in `data/raw/`
+* [ ] Dry run completes with `snakemake --cores 1 -n`
+* [ ] Frozen workflow completes with `snakemake --cores 1`
+* [ ] Cleaned files are regenerated in `data/processed/`
+* [ ] Integrated dataset is present at `data/processed/integrated_fred_sp500.csv`
+* [ ] Analysis outputs are present in `results/`
+* [ ] Figures are present in `figures/`
+* [ ] Metadata is present at `metadata/metadata.json`
+* [ ] Final outputs match the frozen submitted project version
+
+This workflow design supports transparency and provenance by ensuring that each major output is generated by a documented script, tied to a Snakemake rule, and stored in a predictable repository location.
+
+---
+
+## 12. Licenses and Compliance
+
+This project documents licenses and terms of use for the code, documentation, data sources, and third-party software used in the workflow. Because the project integrates externally provided secondary data, licensing compliance is part of the data governance layer of the project rather than a separate administrative detail.
+
+### Code License
+
+This project’s original code is released under the **MIT License**. The applicable license file is stored in the repository root as [`LICENSE`](LICENSE). This license applies to the scripts and workflow files created for the project, including the Python scripts in [`scripts/`](scripts/) and the root-level [`Snakefile`](Snakefile). The MIT License allows reuse, modification, and redistribution of the project code, provided that the copyright notice and license terms are preserved.
+
+### Documentation License
+
+The project documentation is released under the **Creative Commons Attribution 4.0 International License (CC BY 4.0)**. The applicable documentation license file is stored in the repository root as [`LICENSE-DOCUMENTATION.md`](LICENSE-DOCUMENTATION.md). This applies to written project documentation such as the final report, workflow documentation, data dictionary, data quality profile, cleaning provenance, integration summary, and metadata documentation. Under CC BY 4.0, users may share and adapt the documentation as long as appropriate attribution is provided.
+
+### Data Licenses and Terms
+
+#### Dataset 1: Federal Funds Effective Rate from FRED
+
+- **Source:** Board of Governors of the Federal Reserve System (US), retrieved from FRED, Federal Reserve Bank of St. Louis
+- **Series used in this project:** Federal Funds Effective Rate (`DFF`)
+- **Reference format:** Board of Governors of the Federal Reserve System (US), Federal Funds Effective Rate [DFF], retrieved from FRED, Federal Reserve Bank of St. Louis; https://fred.stlouisfed.org/series/DFF, May 6, 2026.
+- **Full Terms of Use Statement:** https://fred.stlouisfed.org/legal/
+- **API Terms of Use:** https://fred.stlouisfed.org/docs/api/terms_of_use.html
+- **Project files:**
+  - [`data/raw/fred_dff_raw.json`](data/raw/fred_dff_raw.json)
+  - [`data/raw/fred_dff.csv`](data/raw/fred_dff.csv)
+  - [`data/processed/fred_dff_clean.csv`](data/processed/fred_dff_clean.csv)
+
+FRED permits use of data subject to its legal notices and source-specific restrictions. Some series available through FRED may be copyrighted by third-party providers, and users are responsible for checking the rights associated with the specific data series they use. FRED’s API Terms of Use also state that API access requires a registered API key and that the Federal Reserve Bank of St. Louis may change, suspend, or discontinue aspects of the API. The project uses the `DFF` series for a non-commercial educational course project, provides attribution to FRED and the Federal Reserve Bank of St. Louis, and does not claim endorsement by the Federal Reserve Bank of St. Louis. The project also avoids altering or presenting the data in a misleading way. For this project’s use case, the FRED data do not create major redistribution concerns for personal, non-commercial, educational use, but users should still follow the full FRED terms and provide proper attribution.
+
+#### Dataset 2: S&P 500 Index Data from Yahoo Finance via `yfinance`
+
+- **Source:** Yahoo Finance
+- **Index:** S&P 500 Index (`^GSPC`)
+- **Acquisition tool:** `yfinance`
+- **Reference format:** Ran Aroussi. *yfinance*: Yahoo! Finance market data downloader, Python package; https://github.com/ranaroussi/yfinance, May 6, 2026.
+- **Full Terms of Use Statement:** https://legal.yahoo.com/us/en/yahoo/terms/product-atos/apiforydn/index.html
+- **Project files:**
+  - [`data/raw/sp500_raw.csv`](data/raw/sp500_raw.csv)
+  - [`data/processed/sp500_clean.csv`](data/processed/sp500_clean.csv)
+
+`yfinance` is not an official Yahoo API. It is an open-source Python package that provides access to publicly available Yahoo Finance endpoints, but the underlying market data remain subject to Yahoo’s terms of use. The `yfinance` project itself is distributed under the Apache Software License, while Yahoo’s API terms define licensed uses and restrictions for Yahoo APIs and reserve rights not expressly granted to users. The project therefore treats Yahoo Finance data as suitable for personal, educational, and research-oriented course use, but not for commercial redistribution or resale. The project does not claim affiliation with or endorsement by Yahoo.
+
+### Third-Party Software
+
+The project depends on open-source Python packages listed in [`requirements.txt`](requirements.txt) and [`pip_freeze.txt`](pip_freeze.txt). Major software dependencies include:
+
+- **pandas**: BSD 3-Clause License
+- **numpy**: BSD 3-Clause License
+- **matplotlib**: Matplotlib License / PSF-compatible license
+- **requests**: Apache 2.0 License
+- **yfinance**: Apache 2.0 License
+- **Snakemake**: MIT License
+
+### Compliance Summary
+
+The project contains no personal, confidential, or human-subject data. The main compliance concerns are attribution, non-commercial educational use, respect for source terms, and clear separation between project-created code/documentation licenses and third-party data terms. We address these concerns through source citations, license files, [`CITATION.cff`](CITATION.cff), machine-readable metadata in [`metadata/metadata.json`](metadata/metadata.json), and documentation of acquisition and reuse assumptions throughout the workflow.
+
+---
+
+## 13. Metadata and Data Documentation
+
+This project includes both human-readable documentation and machine-readable metadata to support discovery, understandability, reuse, and reproducibility. Because the project is not only an analysis of financial data but also a data curation workflow, documentation is treated as part of the project infrastructure rather than as an after-the-fact report.
+
+The main human-readable documentation files are stored in [`docs/`](docs/). The data dictionary, [`docs/data_dictionary.md`](docs/data_dictionary.md), defines the key fields in the raw, cleaned, and integrated datasets. This includes the integration key, Federal Funds Rate variables, S&P 500 price and return variables, and derived fields such as `federal_funds_rate_change`, `federal_funds_rate_direction`, `sp500_daily_return`, `sp500_log_return`, and `sp500_zero_volume_flag`. The repository structure and file organization strategy are documented in [`docs/DATA_STRUCTURE.md`](docs/DATA_STRUCTURE.md), while [`docs/file_inventory.csv`](docs/file_inventory.csv) provides a tabular inventory of project files.
+
+The workflow is documented in [`docs/WORKFLOW.md`](docs/WORKFLOW.md). This file explains the Snakemake workflow, the difference between frozen mode and live mode, the purpose of each rule, and the expected outputs. Additional lifecycle-stage documentation is generated by the scripts themselves: [`docs/data_quality_profile.md`](docs/data_quality_profile.md) summarizes raw data profiling, [`docs/cleaning_provenance.md`](docs/cleaning_provenance.md) explains cleaning operations and decisions, [`docs/INTEGRATION_SUMMARY.md`](docs/INTEGRATION_SUMMARY.md) documents the integration strategy, [`docs/ANALYSIS_SUMMARY.md`](docs/ANALYSIS_SUMMARY.md) summarizes numeric findings, and [`docs/VISUALIZATION_SUMMARY.md`](docs/VISUALIZATION_SUMMARY.md) explains generated figures.
+
+The main machine-readable metadata file is [`metadata/metadata.json`](metadata/metadata.json). It follows a Schema.org / DCAT-style structure and describes the project as a dataset. The metadata includes the project title, description, keywords, creators, contributors, licenses, source datasets, temporal coverage, spatial coverage, variable descriptions, distributions, software requirements, workflow components, and citation information. It also identifies the final integrated dataset as the main entity and records that it contains **18,082 rows** and **8 variables** with temporal coverage from **1954-07-01 to 2026-05-05**.
+
+The metadata file is generated by [`scripts/update_metadata.py`](scripts/update_metadata.py) rather than manually edited. This is important for reproducibility because live mode may change the dataset’s date range, row count, file sizes, or temporal coverage. The metadata generation script reads the current integrated dataset and project files, then writes an updated `metadata.json`. This helps prevent outdated hard-coded metadata and supports the FAIR principles of findability, accessibility, interoperability, and reuse.
+
+Together, the data dictionary, workflow documentation, provenance files, file inventory, `CITATION.cff`, and `metadata/metadata.json` make the project easier to inspect, reproduce, cite, and extend.
+
+---
+
+## 14. References
+
+### Data Sources
+
+Board of Governors of the Federal Reserve System (US). (2026). *Federal Funds Effective Rate [DFF]*. FRED, Federal Reserve Bank of St. Louis. Retrieved May 6, 2026, from [https://fred.stlouisfed.org/series/DFF](https://fred.stlouisfed.org/series/DFF)
+
+Federal Reserve Bank of St. Louis. (n.d.). *FRED terms of use*. Retrieved May 6, 2026, from [https://fred.stlouisfed.org/legal/](https://fred.stlouisfed.org/legal/)
+
+Federal Reserve Bank of St. Louis. (n.d.). *FRED API terms of use*. Retrieved May 6, 2026, from [https://fred.stlouisfed.org/docs/api/terms_of_use.html](https://fred.stlouisfed.org/docs/api/terms_of_use.html)
+
+Yahoo Finance. (2026). *S&P 500 Index (^GSPC)*. Retrieved May 6, 2026, from [https://finance.yahoo.com/quote/%5EGSPC/](https://finance.yahoo.com/quote/%5EGSPC/)
+
+Yahoo. (n.d.). *Yahoo APIs Terms of Use*. Retrieved May 6, 2026, from [https://legal.yahoo.com/us/en/yahoo/terms/product-atos/apiforydn/index.html](https://legal.yahoo.com/us/en/yahoo/terms/product-atos/apiforydn/index.html)
+
+### Software and Libraries
+
+Aroussi, R. (2026). *yfinance: Yahoo! Finance market data downloader* [Python package]. GitHub. Retrieved May 6, 2026, from [https://github.com/ranaroussi/yfinance](https://github.com/ranaroussi/yfinance)
+
+Harris, C. R., Millman, K. J., van der Walt, S. J., Gommers, R., Virtanen, P., Cournapeau, D., Wieser, E., Taylor, J., Berg, S., Smith, N. J., Kern, R., Picus, M., Hoyer, S., van Kerkwijk, M. H., Brett, M., Haldane, A., Del Río, J. F., Wiebe, M., Peterson, P., ... Oliphant, T. E. (2020). Array programming with NumPy. *Nature, 585*(7825), 357–362. [https://doi.org/10.1038/s41586-020-2649-2](https://doi.org/10.1038/s41586-020-2649-2)
+
+Hunter, J. D. (2007). Matplotlib: A 2D graphics environment. *Computing in Science & Engineering, 9*(3), 90–95. [https://doi.org/10.1109/MCSE.2007.55](https://doi.org/10.1109/MCSE.2007.55)
+
+McKinney, W. (2010). Data structures for statistical computing in Python. In S. van der Walt & J. Millman (Eds.), *Proceedings of the 9th Python in Science Conference* (pp. 56–61). [https://doi.org/10.25080/Majora-92bf1922-00a](https://doi.org/10.25080/Majora-92bf1922-00a)
+
+Mölder, F., Jablonski, K. P., Letcher, B., Hall, M. B., Tomkins-Tinch, C. H., Sochat, V., Forster, J., Lee, S., Twardziok, S. O., Kanitz, A., Wilm, A., Holtgrewe, M., Rahmann, S., Nahnsen, S., & Köster, J. (2021). Sustainable data analysis with Snakemake. *F1000Research, 10*, 33. [https://doi.org/10.12688/f1000research.29032.2](https://doi.org/10.12688/f1000research.29032.2)
+
+Python Software Foundation. (2026). *Python language reference, version 3*. Retrieved May 6, 2026, from [https://www.python.org/](https://www.python.org/)
+
+Requests Contributors. (2026). *Requests: HTTP for Humans* [Python package]. Retrieved May 6, 2026, from [https://requests.readthedocs.io/](https://requests.readthedocs.io/)
+
+The pandas development team. (2026). *pandas: Powerful Python data analysis toolkit* [Python package]. Retrieved May 6, 2026, from [https://pandas.pydata.org/](https://pandas.pydata.org/)
+
+### Project Metadata and Citation
+
+Song, W., & Dong, A. (2026). *Federal Funds Rate and S&P 500 Market Performance: A Reproducible Data Curation Project* [Data curation project and software]. GitHub. See [`CITATION.cff`](CITATION.cff) for machine-readable citation metadata.
+
+### Licenses
+
+This project’s original code is licensed under the MIT License. See [`LICENSE`](LICENSE).
+
+This project’s documentation is licensed under the Creative Commons Attribution 4.0 International License (CC BY 4.0). See [`LICENSE-DOCUMENTATION.md`](LICENSE-DOCUMENTATION.md).
+
+The Federal Funds Effective Rate data are retrieved from FRED, Federal Reserve Bank of St. Louis, and should be used in accordance with FRED’s terms of use.
+
+The S&P 500 data are accessed through `yfinance` from Yahoo Finance endpoints. The `yfinance` package is open-source software, but the underlying Yahoo Finance data remain subject to Yahoo’s applicable terms of use.
