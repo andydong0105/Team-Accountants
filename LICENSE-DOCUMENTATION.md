@@ -13,4 +13,4 @@ Under the following terms:
 
 - No additional restrictions — You may not apply legal terms or technological measures that legally restrict others from doing anything the license permits.
 
-Full license legel code: https://creativecommons.org/licenses/by/4.0/legalcode.en
+Full license legal code: https://creativecommons.org/licenses/by/4.0/legalcode.en
