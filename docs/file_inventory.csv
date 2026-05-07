@@ -1,13 +1,54 @@
-relative_path,parent_directory,file_name,suffix,size_bytes
-data/.DS_Store,data,.DS_Store,,6148
-data/output/README.md,data/output,README.md,.md,95
-data/processed/README.md,data/processed,README.md,.md,88
-data/processed/integrated_fred_sp500.csv,data/processed,integrated_fred_sp500.csv,.csv,2360203
-data/raw/CHECKSUMS.sha256,data/raw,CHECKSUMS.sha256,.sha256,270
-data/raw/README.md,data/raw,README.md,.md,153
-data/raw/fred_dff.csv,data/raw,fred_dff.csv,.csv,991770
-data/raw/fred_dff_raw.json,data/raw,fred_dff_raw.json,.json,3608405
-data/raw/sp500_raw.csv,data/raw,sp500_raw.csv,.csv,2209653
-docs/DATA_STRUCTURE.md,docs,DATA_STRUCTURE.md,.md,768
-docs/INTEGRATION_SUMMARY.md,docs,INTEGRATION_SUMMARY.md,.md,1078
-docs/file_inventory.csv,docs,file_inventory.csv,.csv,523
+relative_path,parent_directory,file_name,suffix,size_bytes,size_label,modified_time_utc
+data/processed/README.md,data/processed,README.md,.md,471,471 B,2026-05-07T01:32:02.614499+00:00
+data/processed/fred_dff_clean.csv,data/processed,fred_dff_clean.csv,.csv,416103,406.4 KB,2026-05-07T01:31:59.055082+00:00
+data/processed/integrated_fred_sp500.csv,data/processed,integrated_fred_sp500.csv,.csv,1834599,1.7 MB,2026-05-07T01:31:59.394480+00:00
+data/processed/sp500_clean.csv,data/processed,sp500_clean.csv,.csv,2691066,2.6 MB,2026-05-07T01:31:59.055142+00:00
+data/raw/CHECKSUMS.sha256,data/raw,CHECKSUMS.sha256,.sha256,270,270 B,2026-05-07T01:31:58.298171+00:00
+data/raw/README.md,data/raw,README.md,.md,683,683 B,2026-05-07T01:32:02.614391+00:00
+data/raw/acquisition_metadata.json,data/raw,acquisition_metadata.json,.json,1596,1.6 KB,2026-05-07T01:31:58.298186+00:00
+data/raw/fred_dff.csv,data/raw,fred_dff.csv,.csv,993442,970.2 KB,2026-05-07T01:31:58.298142+00:00
+data/raw/fred_dff_raw.json,data/raw,fred_dff_raw.json,.json,3614433,3.4 MB,2026-05-07T01:31:58.298117+00:00
+data/raw/sp500_raw.csv,data/raw,sp500_raw.csv,.csv,2648861,2.5 MB,2026-05-07T01:31:58.298158+00:00
+scripts/acquire_data.py,scripts,acquire_data.py,.py,14189,13.9 KB,2026-05-06T22:41:46.396053+00:00
+scripts/analyze_data.py,scripts,analyze_data.py,.py,25877,25.3 KB,2026-05-06T23:33:53.147297+00:00
+scripts/data_cleaning.py,scripts,data_cleaning.py,.py,30162,29.5 KB,2026-05-07T01:25:20.286521+00:00
+scripts/data_integration.py,scripts,data_integration.py,.py,27551,26.9 KB,2026-05-06T23:24:29.314098+00:00
+scripts/data_quality.py,scripts,data_quality.py,.py,32643,31.9 KB,2026-05-06T23:11:41.842313+00:00
+scripts/storage_and_organization.py,scripts,storage_and_organization.py,.py,24860,24.3 KB,2026-05-07T00:43:18.118208+00:00
+scripts/update_metadata.py,scripts,update_metadata.py,.py,19369,18.9 KB,2026-05-07T01:30:10.030368+00:00
+scripts/visualize_data.py,scripts,visualize_data.py,.py,17965,17.5 KB,2026-05-06T23:41:10.611531+00:00
+docs/ANALYSIS_SUMMARY.md,docs,ANALYSIS_SUMMARY.md,.md,2708,2.6 KB,2026-05-07T01:31:59.668403+00:00
+docs/DATA_STRUCTURE.md,docs,DATA_STRUCTURE.md,.md,7216,7.0 KB,2026-05-07T01:32:02.615138+00:00
+docs/INTEGRATION_SUMMARY.md,docs,INTEGRATION_SUMMARY.md,.md,3733,3.6 KB,2026-05-07T01:31:59.394550+00:00
+docs/README.md,docs,README.md,.md,771,771 B,2026-05-07T01:32:02.614749+00:00
+docs/VISUALIZATION_SUMMARY.md,docs,VISUALIZATION_SUMMARY.md,.md,2758,2.7 KB,2026-05-07T01:32:02.320538+00:00
+docs/WORKFLOW.md,docs,WORKFLOW.md,.md,12590,12.3 KB,2026-05-07T00:15:29.851946+00:00
+docs/cleaning_provenance.md,docs,cleaning_provenance.md,.md,4398,4.3 KB,2026-05-07T01:31:59.055195+00:00
+docs/data_dictionary.md,docs,data_dictionary.md,.md,10409,10.2 KB,2026-05-07T00:27:49.934466+00:00
+docs/data_quality_profile.md,docs,data_quality_profile.md,.md,3798,3.7 KB,2026-05-07T01:31:58.674422+00:00
+results/README.md,results,README.md,.md,669,669 B,2026-05-07T01:32:02.614585+00:00
+results/analysis_findings_summary.csv,results,analysis_findings_summary.csv,.csv,1635,1.6 KB,2026-05-07T01:31:59.668390+00:00
+results/checksum_verification.csv,results,checksum_verification.csv,.csv,594,594 B,2026-05-07T01:31:58.674411+00:00
+results/cleaning_decisions.csv,results,cleaning_decisions.csv,.csv,1860,1.8 KB,2026-05-07T01:31:59.055181+00:00
+results/cleaning_summary.csv,results,cleaning_summary.csv,.csv,2240,2.2 KB,2026-05-07T01:31:59.055165+00:00
+results/correlation_results.csv,results,correlation_results.csv,.csv,882,882 B,2026-05-07T01:31:59.668346+00:00
+results/data_quality_summary.csv,results,data_quality_summary.csv,.csv,1637,1.6 KB,2026-05-07T01:31:58.674316+00:00
+results/date_coverage_summary.csv,results,date_coverage_summary.csv,.csv,598,598 B,2026-05-07T01:31:58.674375+00:00
+results/integration_quality_checks.csv,results,integration_quality_checks.csv,.csv,594,594 B,2026-05-07T01:31:59.394538+00:00
+results/integration_summary.csv,results,integration_summary.csv,.csv,2190,2.1 KB,2026-05-07T01:31:59.394522+00:00
+results/missingness_summary.csv,results,missingness_summary.csv,.csv,748,748 B,2026-05-07T01:31:58.674359+00:00
+results/period_summary.csv,results,period_summary.csv,.csv,2269,2.2 KB,2026-05-07T01:31:59.668378+00:00
+results/provenance/acquire_data.done,results/provenance,acquire_data.done,.done,0,0 B,2026-05-07T01:31:58.298199+00:00
+results/rate_change_analysis.csv,results,rate_change_analysis.csv,.csv,1145,1.1 KB,2026-05-07T01:31:59.668364+00:00
+results/schema_summary.csv,results,schema_summary.csv,.csv,1003,1003 B,2026-05-07T01:31:58.674388+00:00
+results/summary_statistics.csv,results,summary_statistics.csv,.csv,1070,1.0 KB,2026-05-07T01:31:59.668302+00:00
+results/temporal_alignment_profile.csv,results,temporal_alignment_profile.csv,.csv,1078,1.1 KB,2026-05-07T01:31:58.674400+00:00
+results/visualization_summary.csv,results,visualization_summary.csv,.csv,1030,1.0 KB,2026-05-07T01:32:02.320526+00:00
+figures/README.md,figures,README.md,.md,358,358 B,2026-05-07T01:32:02.614666+00:00
+figures/average_return_by_rate_direction.png,figures,average_return_by_rate_direction.png,.png,114416,111.7 KB,2026-05-07T01:32:02.320514+00:00
+figures/fed_funds_rate_trend.png,figures,fed_funds_rate_trend.png,.png,207470,202.6 KB,2026-05-07T01:32:02.320410+00:00
+figures/fed_funds_rate_vs_sp500_return.png,figures,fed_funds_rate_vs_sp500_return.png,.png,579558,566.0 KB,2026-05-07T01:32:02.320501+00:00
+figures/sp500_close_trend.png,figures,sp500_close_trend.png,.png,171103,167.1 KB,2026-05-07T01:32:02.320466+00:00
+figures/sp500_daily_returns.png,figures,sp500_daily_returns.png,.png,217527,212.4 KB,2026-05-07T01:32:02.320487+00:00
+metadata/README.md,metadata,README.md,.md,298,298 B,2026-05-07T01:32:02.614842+00:00
+metadata/metadata.json,metadata,metadata.json,.json,12319,12.0 KB,2026-05-07T01:32:02.566396+00:00

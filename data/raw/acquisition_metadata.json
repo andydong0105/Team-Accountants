@@ -1,0 +1,56 @@
+{
+  "project": "Federal Funds Rate and S&P 500 Market Performance",
+  "script": "scripts/acquire_data.py",
+  "generated_at_utc": "2026-05-07T01:31:58.257404+00:00",
+  "data_mode": "live",
+  "raw_data_directory": "data/raw",
+  "datasets": [
+    {
+      "dataset": "Federal Funds Effective Rate",
+      "source": "Federal Reserve Bank of St. Louis FRED API",
+      "series_id": "DFF",
+      "url": "https://api.stlouisfed.org/fred/series/observations",
+      "mode": "live",
+      "frozen_end_date": null,
+      "row_count": 26242,
+      "columns": [
+        "realtime_start",
+        "realtime_end",
+        "date",
+        "value"
+      ],
+      "output_files": [
+        "data/raw/fred_dff_raw.json",
+        "data/raw/fred_dff.csv"
+      ]
+    },
+    {
+      "dataset": "S&P 500 Index",
+      "source": "Yahoo Finance via yfinance",
+      "ticker": "^GSPC",
+      "mode": "live",
+      "start_date": "max",
+      "frozen_end_date": null,
+      "row_count": 24703,
+      "columns": [
+        "date",
+        "adj_close",
+        "close",
+        "high",
+        "low",
+        "open",
+        "volume"
+      ],
+      "output_files": [
+        "data/raw/sp500_raw.csv"
+      ]
+    }
+  ],
+  "checksum_file": "data/raw/CHECKSUMS.sha256",
+  "notes": [
+    "Frozen mode uses a fixed end date to support reproducibility.",
+    "Live mode retrieves the latest available observations and may produce different results.",
+    "Formal cleaning, quality assessment, integration, and analysis are performed by downstream scripts.",
+    "The FRED API key is intentionally not stored in the repository."
+  ]
+}
