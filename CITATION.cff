@@ -1,28 +1,35 @@
 cff-version: 1.2.0
 message: "If you use this project, please cite it using the metadata below."
-title: "Federal Funds Rate and S&P 500 Market Performance"
+title: "Federal Funds Rate and S&P 500 Market Performance: A Reproducible Data Curation Project"
 type: software
 authors:
   - family-names: Song
     given-names: Weimo
   - family-names: Dong
     given-names: Andy
-abstract: "A reproducible IS 477 final project integrating Federal Funds Effective Rate data from FRED with S&P 500 market data from Yahoo Finance via yfinance. The project documents data acquisition, checksum verification, quality profiling, cleaning, temporal alignment, integration, exploratory analysis, visualization, and Snakemake workflow automation."
+abstract: "A reproducible IS 477 final project integrating Federal Funds Effective Rate data from FRED with S&P 500 market data from Yahoo Finance via yfinance. The project documents data acquisition, checksum verification, raw data quality profiling, data cleaning, temporal alignment, data integration, exploratory analysis, visualization, machine-readable metadata, and Snakemake workflow automation."
 keywords:
   - Federal Funds Effective Rate
   - FRED
   - S&P 500
+  - Yahoo Finance
+  - yfinance
   - data curation
   - data integration
+  - time series
   - reproducibility
+  - provenance
+  - metadata
   - Snakemake
 license: MIT
 version: 1.0.0
 date-released: 2026-05-06
 repository-code: "https://github.com/andydong0105/Team-Accountants"
+url: "https://github.com/andydong0105/Team-Accountants"
+
 preferred-citation:
   type: software
-  title: "Federal Funds Rate and S&P 500 Market Performance"
+  title: "Federal Funds Rate and S&P 500 Market Performance: A Reproducible Data Curation Project"
   authors:
     - family-names: Song
       given-names: Weimo
@@ -30,3 +37,93 @@ preferred-citation:
       given-names: Andy
   year: 2026
   repository-code: "https://github.com/andydong0105/Team-Accountants"
+  url: "https://github.com/andydong0105/Team-Accountants"
+
+references:
+  - type: dataset
+    title: "Federal Funds Effective Rate [DFF]"
+    authors:
+      - name: "Board of Governors of the Federal Reserve System (US)"
+    year: 2026
+    url: "https://fred.stlouisfed.org/series/DFF"
+    notes: "Retrieved from FRED, Federal Reserve Bank of St. Louis, May 6, 2026."
+
+  - type: dataset
+    title: "S&P 500 Index (^GSPC)"
+    authors:
+      - name: "Yahoo Finance"
+    year: 2026
+    url: "https://finance.yahoo.com/quote/%5EGSPC/"
+    notes: "Accessed through the yfinance Python package, May 6, 2026."
+
+  - type: software
+    title: "yfinance: Yahoo! Finance market data downloader"
+    authors:
+      - family-names: Aroussi
+        given-names: Ran
+    year: 2026
+    url: "https://github.com/ranaroussi/yfinance"
+
+  - type: software
+    title: "pandas: Powerful Python data analysis toolkit"
+    authors:
+      - name: "The pandas development team"
+    year: 2026
+    url: "https://pandas.pydata.org/"
+
+  - type: software
+    title: "NumPy"
+    authors:
+      - name: "NumPy Developers"
+    year: 2026
+    url: "https://numpy.org/"
+
+  - type: software
+    title: "Matplotlib"
+    authors:
+      - name: "Matplotlib Development Team"
+    year: 2026
+    url: "https://matplotlib.org/"
+
+  - type: software
+    title: "Requests: HTTP for Humans"
+    authors:
+      - name: "Requests Contributors"
+    year: 2026
+    url: "https://requests.readthedocs.io/"
+
+  - type: software
+    title: "Sustainable data analysis with Snakemake"
+    authors:
+      - family-names: Mölder
+        given-names: Felix
+      - family-names: Jablonski
+        given-names: Kim Philipp
+      - family-names: Letcher
+        given-names: Brice
+      - family-names: Hall
+        given-names: Michael B.
+      - family-names: Tomkins-Tinch
+        given-names: Christopher H.
+      - family-names: Sochat
+        given-names: Vanessa
+      - family-names: Forster
+        given-names: Johannes
+      - family-names: Lee
+        given-names: Soohyun
+      - family-names: Twardziok
+        given-names: Sven O.
+      - family-names: Kanitz
+        given-names: Alexander
+      - family-names: Wilm
+        given-names: Andreas
+      - family-names: Holtgrewe
+        given-names: Manuel
+      - family-names: Rahmann
+        given-names: Sven
+      - family-names: Nahnsen
+        given-names: Sven
+      - family-names: Köster
+        given-names: Johannes
+    year: 2021
+    doi: "10.12688/f1000research.29032.2"
