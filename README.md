@@ -61,7 +61,7 @@ Team-Accountants/
 ├── figures/                   # generated visualizations
 ├── docs/                      # human-readable documentation
 └── metadata/                  # machine-readable descriptive metadata
-````
+```
 
 The [`data/raw/`](data/raw/) directory stores source-level data acquired from external providers. These files are preserved for provenance and should not be manually edited. Important raw files include [`data/raw/fred_dff_raw.json`](data/raw/fred_dff_raw.json), [`data/raw/fred_dff.csv`](data/raw/fred_dff.csv), [`data/raw/sp500_raw.csv`](data/raw/sp500_raw.csv), [`data/raw/CHECKSUMS.sha256`](data/raw/CHECKSUMS.sha256), and [`data/raw/acquisition_metadata.json`](data/raw/acquisition_metadata.json). Preserving both the FRED raw JSON response and normalized CSV files makes it possible to inspect the original acquisition output while also supporting tabular analysis.
 
@@ -390,7 +390,7 @@ Clone the repository and enter the project root:
 ```bash
 git clone https://github.com/andydong0105/Team-Accountants.git
 cd Team-Accountants
-````
+```
 
 After cloning, the root directory should include files and folders such as:
 
